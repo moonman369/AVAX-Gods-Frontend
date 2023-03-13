@@ -2,7 +2,11 @@ import React from "react";
 import { PageHOC } from "../components";
 
 const Home = () => {
-  return <div></div>;
+  return (
+    <div>
+      <h1 className="text-white text-xl">Hello from Home</h1>
+    </div>
+  );
 };
 
 export default PageHOC(
