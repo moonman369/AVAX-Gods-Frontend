@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { CustomInput, PageHOC } from "../components";
+import { CustomInput, PageHOC, CustomButton } from "../components";
 import { useGlobalContext } from "../context";
 
 const Home = () => {
@@ -16,6 +16,8 @@ const Home = () => {
         value={playerName}
         handleValueChange={setPlayerName}
       />
+
+      <CustomButton title="Register" handleClick={() => {}} restStyles="mt-6" />
     </div>
   );
 };
