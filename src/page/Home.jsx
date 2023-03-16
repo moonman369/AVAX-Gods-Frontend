@@ -19,13 +19,18 @@ const Home = () => {
         await contract.registerPlayer(playerName, playerName);
 
         setShowAlert({
-          status: "true",
+          status: true,
           type: "info",
           message: `${playerName} is being summoned!`,
         });
       }
     } catch (error) {
-      console.error(error);
+      console.error(error.message);
+      setShowAlert({
+        status: true,
+        type: "failure",
+        message: error.code === 4001 && "User denied tx signature",
+      });
     }
   };
 

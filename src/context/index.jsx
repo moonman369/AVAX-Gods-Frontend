@@ -20,7 +20,7 @@ export const GlobalContextProvider = ({ children }) => {
   const [walletAddress, setWalletAddress] = useState("");
   const [provider, setProvider] = useState(null);
   const [contract, setContract] = useState(null);
-  const [showAlert, setShowAlert] = useState("");
+  const [showAlert, setShowAlert] = useState(false);
 
   // * Set the wallet address to state
   const updateCurrentWalletAddress = async () => {
@@ -34,11 +34,10 @@ export const GlobalContextProvider = ({ children }) => {
   const switchToFuji = async () => {
     try {
       await window.ethereum.request({
-        method: "wallet_addEthereumChain",
+        method: "wallet_switchEthereumChain",
         params: [
           {
             chainId: `0x${AVAX_FUJI_TESTNET_CHAIN_ID.toString(16)}`,
-            rpcUrls: ["https://api.avax-test.network/ext/bc/C/rpc"],
           },
         ],
       });
@@ -74,7 +73,10 @@ export const GlobalContextProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    switchToFuji();
+    const run = async () => {
+      await switchToFuji();
+    };
+    run();
   }, []);
 
   // * Set the smart contract and provider to the state

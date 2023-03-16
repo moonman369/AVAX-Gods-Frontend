@@ -2,14 +2,21 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 import { logo, heroImg } from "../assets";
+import { useGlobalContext } from "../context";
 import styles from "../styles";
+import Alert from "./Alert";
 
 // Implementing code reusability using Higher Order Component (HOC). It is essentially a wrapper component that takes another child component as an argument. It is a function that returns another function
 
 const PageHOC = (Component, title, description) => () => {
+  const { showAlert } = useGlobalContext();
   const navigate = useNavigate();
   return (
     <div className={styles.hocContainer}>
+      {showAlert?.status && (
+        <Alert type={showAlert.type} message={showAlert.message} />
+      )}
+
       <div className={styles.hocContentBox}>
         <img
           src={logo}
