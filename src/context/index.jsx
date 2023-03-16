@@ -13,23 +13,68 @@ import { ABI, ADDRESS } from "../contract";
 
 const GlobalContext = createContext();
 
+const AVAX_MAINNET_CHAIN_ID = 43114;
+const AVAX_FUJI_TESTNET_CHAIN_ID = 43113;
+
 export const GlobalContextProvider = ({ children }) => {
   const [walletAddress, setWalletAddress] = useState("");
   const [provider, setProvider] = useState(null);
   const [contract, setContract] = useState(null);
+  const [showAlert, setShowAlert] = useState("");
 
   // * Set the wallet address to state
   const updateCurrentWalletAddress = async () => {
     const accounts = await window.ethereum.request({
       method: "eth_requestAccounts",
     });
-    // console.log(accounts);
+    console.log(accounts);
     if (accounts) setWalletAddress(accounts[0]);
+  };
+
+  const switchToFuji = async () => {
+    try {
+      await window.ethereum.request({
+        method: "wallet_addEthereumChain",
+        params: [
+          {
+            chainId: `0x${AVAX_FUJI_TESTNET_CHAIN_ID.toString(16)}`,
+            rpcUrls: ["https://api.avax-test.network/ext/bc/C/rpc"],
+          },
+        ],
+      });
+    } catch (switchError) {
+      if (switchError.code === 4902) {
+        try {
+          await window.ethereum.request({
+            method: "wallet_addEthereumChain",
+            params: [
+              {
+                chainId: `0x${AVAX_FUJI_TESTNET_CHAIN_ID.toString(16)}`,
+                chainName: "Fuji Testnet",
+                nativeCurrency: {
+                  name: "Avalanche Token",
+                  symbol: "AVAX",
+                  decimals: 18,
+                },
+                rpcUrls: ["https://api.avax-test.network/ext/bc/C/rpc"],
+                blockExplorerUrls: ["https://testnet.snowtrace.io/"],
+              },
+            ],
+          });
+        } catch (addError) {
+          console.error(addError);
+        }
+      }
+    }
   };
 
   useEffect(() => {
     updateCurrentWalletAddress();
     window.ethereum.on("accountsChanged", updateCurrentWalletAddress);
+  }, []);
+
+  useEffect(() => {
+    switchToFuji();
   }, []);
 
   // * Set the smart contract and provider to the state
@@ -38,20 +83,33 @@ export const GlobalContextProvider = ({ children }) => {
       const web3Modal = new Web3Modal();
       const connection = await web3Modal.connect();
       const newProvider = new ethers.providers.Web3Provider(connection);
-      const signer = newProvider.signer();
+      const signer = newProvider.getSigner();
       const newContract = new ethers.Contract(ADDRESS, ABI, signer);
 
       setProvider(newProvider);
       setContract(newContract);
-      console.log(newContract);
     };
+
+    setSmartContractAndProvider();
   }, []);
+
+  useEffect(() => {
+    if (showAlert?.status) {
+      const timer = setTimeout(() => {
+        setShowAlert({ status: false, type: "info", message: "" });
+      }, [5000]);
+
+      return () => clearTimeout(timer);
+    }
+  }, [showAlert]);
 
   return (
     <GlobalContext.Provider
       value={{
         contract,
         walletAddress,
+        showAlert,
+        setShowAlert,
       }}
     >
       {children}
