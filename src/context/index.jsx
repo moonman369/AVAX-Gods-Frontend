@@ -21,7 +21,12 @@ export const GlobalContextProvider = ({ children }) => {
   const [walletAddress, setWalletAddress] = useState("");
   const [provider, setProvider] = useState(null);
   const [contract, setContract] = useState(null);
-  const [showAlert, setShowAlert] = useState(false);
+  const [showAlert, setShowAlert] = useState({
+    status: false,
+    type: "info",
+    message: "",
+  });
+  const [battleName, setBattleName] = useState("");
 
   const navigate = useNavigate();
 
@@ -106,6 +111,8 @@ export const GlobalContextProvider = ({ children }) => {
         provider,
         walletAddress,
         setShowAlert,
+        battleName,
+        setBattleName,
       });
     }
   }, [contract]);
