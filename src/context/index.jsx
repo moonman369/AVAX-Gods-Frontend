@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import Web3Modal from "web3modal";
 
 import { ABI, ADDRESS } from "../contract";
+import createEventListeners from "./createEventListeners";
 
 const GlobalContext = createContext();
 
@@ -21,6 +22,8 @@ export const GlobalContextProvider = ({ children }) => {
   const [provider, setProvider] = useState(null);
   const [contract, setContract] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
+
+  const navigate = useNavigate();
 
   // * Set the wallet address to state
   const updateCurrentWalletAddress = async () => {
@@ -94,6 +97,18 @@ export const GlobalContextProvider = ({ children }) => {
 
     setSmartContractAndProvider();
   }, []);
+
+  useEffect(() => {
+    if (contract) {
+      createEventListeners({
+        navigate,
+        contract,
+        provider,
+        walletAddress,
+        setShowAlert,
+      });
+    }
+  }, [contract]);
 
   useEffect(() => {
     if (showAlert?.status) {
