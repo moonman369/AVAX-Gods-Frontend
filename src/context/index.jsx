@@ -134,6 +134,8 @@ export const GlobalContextProvider = ({ children }) => {
         walletAddress,
         showAlert,
         setShowAlert,
+        battleName,
+        setBattleName,
       }}
     >
       {children}

@@ -1,18 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { PageHOC, CustomButton, CustomInput } from "../components";
+import { PageHOC, CustomButton, CustomInput, GameLoad } from "../components";
 import { useGlobalContext } from "../context";
 import styles from "../styles";
 
 const CreateBattle = () => {
   const navigate = useNavigate();
   const { contract, battleName, setBattleName } = useGlobalContext();
+  const [waitBattle, setWaitBattle] = useState(false);
 
-  const handleClick = () => {};
+  const handleClick = async () => {
+    if (!battleName || !battleName.trim()) return null;
+    try {
+      await contract.createBattle(battleName);
+      setWaitBattle(true);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <>
+      {waitBattle && <GameLoad />}
       <div className="flex flex-col mb-5">
         <CustomInput
           label="Battle"
