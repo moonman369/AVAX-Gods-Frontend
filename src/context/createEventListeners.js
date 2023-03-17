@@ -41,7 +41,7 @@ const createEventListeners = ({
       walletAddress.toLowerCase() === args.player1.toLowerCase() ||
       walletAddress.toLowerCase() === args.player2.toLowerCase()
     ) {
-      navigate(`/battle/${battleName}`);
+      navigate(`/battle/${args.battleName}`);
       setUpdateGameData((prevUpdateGameData) => prevUpdateGameData + 1);
     }
   });

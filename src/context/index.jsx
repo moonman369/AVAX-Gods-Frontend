@@ -33,6 +33,7 @@ export const GlobalContextProvider = ({ children }) => {
     activeBattle: null,
   });
   const [updateGameData, setUpdateGameData] = useState(0);
+  const [battleGround, setBattleGround] = useState("bg-astral");
 
   const navigate = useNavigate();
 
@@ -137,7 +138,7 @@ export const GlobalContextProvider = ({ children }) => {
   useEffect(() => {
     const fetchGameData = async () => {
       const fetchedBattles = await contract.getAllBattles();
-      // console.log(fetchedBattles);
+      console.log(fetchedBattles);
       const pendingBattles = fetchedBattles.filter(
         (battle) => battle.battleStatus === 0
       );
@@ -174,6 +175,8 @@ export const GlobalContextProvider = ({ children }) => {
         gameData,
         updateGameData,
         setUpdateGameData,
+        battleGround,
+        setBattleGround,
       }}
     >
       {children}
