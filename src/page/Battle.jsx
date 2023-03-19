@@ -45,7 +45,27 @@ const Battle = () => {
         }
 
         const p1TokenData = await contract.getPlayerToken(player01Address);
-      } catch (error) {}
+        const player01 = await contract.getPlayer(player01Address);
+        const player02 = await contract.getPlayer(player02Address);
+
+        const p1Att = p1TokenData.attackStrength.toNumber();
+        const p1Def = p1TokenData.defenseStrength.toNumber();
+        p1H = player01.playerHealth.toNumber();
+        p1M = player01.playerMana.toNumber();
+        p2H = player02.playerHealth.toNumber();
+        p2M = player02.playerMana.toNumber();
+
+        setPlayer1({
+          ...player01,
+          att: p1Att,
+          def: p1Def,
+          health: p1H,
+          mana: p1M,
+        });
+        setPlayer2({ ...player02, att: "X", def: "X", health: p2H, mana: p2M });
+      } catch (error) {
+        console.error(error);
+      }
     };
 
     if (contract && gameData.activeBattle) getPlayerInfo();
@@ -55,7 +75,11 @@ const Battle = () => {
     <div
       className={`${styles.flexBetween} ${styles.gameContainer} ${battleGround}`}
     >
-      <h1 className="text-xl">{battleName}</h1>
+      {showAlert?.status && (
+        <Alert type={showAlert.type} message={showAlert.message} />
+      )}
+
+      <PlayerInfo player={player2} playerIcon={player02Icon} mt />
     </div>
   );
 };
