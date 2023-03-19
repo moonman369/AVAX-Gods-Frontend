@@ -120,6 +120,7 @@ export const GlobalContextProvider = ({ children }) => {
         setShowAlert,
         battleName,
         setBattleName,
+        setUpdateGameData,
       });
     }
   }, [contract]);

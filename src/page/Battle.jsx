@@ -32,6 +32,7 @@ const Battle = () => {
     const getPlayerInfo = async () => {
       try {
         let [player01Address, player02Address] = [null, null];
+        console.log(gameData.activeBattle);
 
         if (
           gameData.activeBattle.players[0].toLowerCase() ===
@@ -48,12 +49,15 @@ const Battle = () => {
         const player01 = await contract.getPlayer(player01Address);
         const player02 = await contract.getPlayer(player02Address);
 
+        console.log(player01);
+
         const p1Att = p1TokenData.attackStrength.toNumber();
         const p1Def = p1TokenData.defenseStrength.toNumber();
-        p1H = player01.playerHealth.toNumber();
-        p1M = player01.playerMana.toNumber();
-        p2H = player02.playerHealth.toNumber();
-        p2M = player02.playerMana.toNumber();
+        const p1H = player01.playerHealth.toNumber();
+        const p1M = player01.playerMana.toNumber();
+        const p2H = player02.playerHealth.toNumber();
+        const p2M = player02.playerMana.toNumber();
+        console.log(p1H);
 
         setPlayer1({
           ...player01,
