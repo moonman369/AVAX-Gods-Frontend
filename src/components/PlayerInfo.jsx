@@ -6,7 +6,7 @@ const healthPoints = 25;
 const healthLevel = (points) =>
   points >= 12 ? "bg-green-500" : points >= 6 ? "bg-orange-500" : "bg-red-500";
 const marginIndexing = (index) =>
-  index !== healthPoints - 1 ? "mr-1" : "mr-0";
+  index !== healthPoints - 1 ? "mr-1.5" : "mr-0";
 
 const PlayerInfo = ({ player, playerIcon, mt }) => (
   <div className={`${styles.flexCenter} ${mt ? "mt-4" : "mb-4"}`}>
