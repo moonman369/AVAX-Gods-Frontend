@@ -102,7 +102,7 @@ const Battle = () => {
             restStyles="mt-3"
           />
           <ActionButton
-            imgUrl={attack}
+            imgUrl={defense}
             handleClick={() => {}}
             restStyles="ml-6 hover:border-red-600"
           />
