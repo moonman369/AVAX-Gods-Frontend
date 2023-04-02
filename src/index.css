@@ -65,9 +65,14 @@
   border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
-body {
-  overflow: hidden;
+body::-webkit-scrollbar {
+  display: none;
   /* Hide scrollbars */
+}
+
+body {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none;
 }
 
 /* Battle Animation Effect */
