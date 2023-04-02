@@ -11,6 +11,7 @@ import Web3Modal from "web3modal";
 
 import { ABI, ADDRESS } from "../contract";
 import createEventListeners from "./createEventListeners";
+import { GetParams } from "../utils/onboard";
 
 const GlobalContext = createContext();
 
@@ -36,6 +37,7 @@ export const GlobalContextProvider = ({ children }) => {
   const [battleGround, setBattleGround] = useState(
     localStorage.getItem("battleground") || "bg-astral"
   );
+  const [step, setStep] = useState(1);
 
   const navigate = useNavigate();
 
@@ -47,6 +49,22 @@ export const GlobalContextProvider = ({ children }) => {
     } else {
       localStorage.setItem("battleground", battleGround);
     }
+  }, []);
+
+  useEffect(() => {
+    const resetParams = async () => {
+      const currentStep = await GetParams();
+      setStep(currentStep.step);
+    };
+
+    resetParams();
+
+    window?.ethereum.on("chainChanged", () => {
+      resetParams();
+    });
+    window?.ethereum.on("accountsChanged", () => {
+      resetParams();
+    });
   }, []);
 
   // * Set the wallet address to state
@@ -123,7 +141,7 @@ export const GlobalContextProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    if (contract) {
+    if (contract && step !== -1) {
       createEventListeners({
         navigate,
         contract,
