@@ -38,6 +38,7 @@ const Home = () => {
 
   useEffect(() => {
     const checkForPlayerToken = async () => {
+      if (!contract) return;
       const playerExists = await contract.isPlayer(walletAddress);
       const playerTokenExists = await contract.isPlayerToken(walletAddress);
       // console.log(playerExists, playerTokenExists);
@@ -46,7 +47,7 @@ const Home = () => {
       }
     };
     checkForPlayerToken();
-  }, [contract]);
+  }, [contract, walletAddress]);
 
   return (
     <div className="flex flex-col">
