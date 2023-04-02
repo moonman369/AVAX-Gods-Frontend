@@ -22,6 +22,7 @@ const Battle = () => {
     showAlert,
     setShowAlert,
     battleGround,
+    setErrorMessage,
   } = useGlobalContext();
   const [player1, setPlayer1] = useState({});
   const [player2, setPlayer2] = useState({});
@@ -68,12 +69,13 @@ const Battle = () => {
         });
         setPlayer2({ ...player02, att: "X", def: "X", health: p2H, mana: p2M });
       } catch (error) {
-        console.error(error);
+        setErrorMessage(error);
+        // console.error(error);
       }
     };
 
     if (contract && gameData.activeBattle) getPlayerInfo();
-  }, [contract, gameData, battleName]);
+  }, [contract, gameData, battleName, walletAddress]);
 
   const makeAMove = async (choice) => {
     playAudio(choice === 1 ? attackSound : defenseSound);
@@ -87,7 +89,8 @@ const Battle = () => {
         message: `Conjuring ${choice === 1 ? "attack" : "defense"} spell`,
       });
     } catch (error) {
-      console.error(error);
+      console.log(error.reason);
+      setErrorMessage(error);
     }
   };
 
