@@ -4,7 +4,8 @@ import { CustomInput, PageHOC, CustomButton } from "../components";
 import { useGlobalContext } from "../context";
 
 const Home = () => {
-  const { contract, walletAddress, setShowAlert } = useGlobalContext();
+  const { contract, walletAddress, setShowAlert, gameData, setErrorMessage } =
+    useGlobalContext();
   const [playerName, setPlayerName] = useState("");
   const navigate = useNavigate();
 
@@ -27,12 +28,7 @@ const Home = () => {
         });
       }
     } catch (error) {
-      console.error(error.message);
-      setShowAlert({
-        status: true,
-        type: "failure",
-        message: error.code === 4001 && "User denied tx signature",
-      });
+      setErrorMessage(error);
     }
   };
 
@@ -48,6 +44,12 @@ const Home = () => {
     };
     checkForPlayerToken();
   }, [contract, walletAddress]);
+
+  useEffect(() => {
+    if (gameData.activeBattle) {
+      navigate(`/battle/${gameData.activeBattle.name}`);
+    }
+  }, [gameData]);
 
   return (
     <div className="flex flex-col">
