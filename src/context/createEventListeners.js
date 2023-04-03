@@ -2,6 +2,7 @@ import { ethers } from "ethers";
 import { ABI } from "../contract";
 import { playAudio, sparcle } from "../utils/animation.js";
 import { attackSound, defenseSound } from "../assets";
+import { useNavigate } from "react-router-dom";
 
 const nullAddress = "0x0000000000000000000000000000000000000000";
 
@@ -81,6 +82,28 @@ const createEventListeners = ({
     }
 
     setUpdateGameData((prevUpdateGameData) => prevUpdateGameData + 1);
+  });
+
+  const BattleEndedEventFilter = contract.filters.BattleEnded();
+
+  AddNewEvent(BattleEndedEventFilter, provider, ({ args }) => {
+    console.log("Battle ended!", args, walletAddress);
+
+    if (walletAddress.toLowerCase() === args.winner.toLowerCase()) {
+      setShowAlert({
+        status: true,
+        type: "success",
+        message: "VICTORY IS YOURS!",
+      });
+    } else if (walletAddress.toLowerCase() === args.loser.toLowerCase()) {
+      setShowAlert({
+        status: true,
+        type: "failure",
+        message: "DEFEAT",
+      });
+    }
+
+    navigate("/create-battle");
   });
 };
 
