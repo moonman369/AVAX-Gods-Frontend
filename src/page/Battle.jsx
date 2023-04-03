@@ -79,6 +79,16 @@ const Battle = () => {
     if (contract && gameData.activeBattle) getPlayerInfo();
   }, [contract, gameData, battleName, walletAddress]);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!gameData?.activeBattle) {
+        navigate("/");
+      }
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   const makeAMove = async (choice) => {
     playAudio(choice === 1 ? attackSound : defenseSound);
 
