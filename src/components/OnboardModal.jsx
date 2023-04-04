@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
-import Modal from 'react-modal';
+import { useState, useEffect } from "react";
+import Modal from "react-modal";
 
-import styles from '../styles';
-import { CustomButton } from '.';
-import { useGlobalContext } from '../context';
-import { GetParams, SwitchNetwork } from '../utils/onboard.js';
+import styles from "../styles";
+import { CustomButton } from ".";
+import { useGlobalContext } from "../context";
+import { GetParams, SwitchNetwork } from "../utils/onboard.js";
 
 const OnboardModal = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -20,11 +20,11 @@ const OnboardModal = () => {
   useEffect(() => {
     resetParams();
 
-    window?.ethereum?.on('chainChanged', () => {
+    window?.ethereum?.on("chainChanged", () => {
       resetParams();
     });
 
-    window?.ethereum?.on('accountsChanged', () => {
+    window?.ethereum?.on("accountsChanged", () => {
       resetParams();
     });
   }, []);
@@ -35,11 +35,20 @@ const OnboardModal = () => {
         return (
           <>
             <p className={styles.modalText}>
-              You don't have Core Wallet installed!
+              You don't have an Ethereum Wallet installed!
             </p>
             <CustomButton
-              title="Download Core"
-              handleClick={() => window.open('https://core.app/', '_blank')}
+              title="Download Core (Beta)"
+              handleClick={() => window.open("https://core.app/", "_blank")}
+              restStyles="cursor-pointer"
+            />
+            <br />
+            <CustomButton
+              title="Download Metamask"
+              handleClick={() =>
+                window.open("https://metamask.io/download/", "_blank")
+              }
+              restStyles="cursor-pointer"
             />
           </>
         );
@@ -75,7 +84,9 @@ const OnboardModal = () => {
             </p>
             <CustomButton
               title="Grab some test tokens"
-              handleClick={() => window.open('https://faucet.avax.network/', '_blank')}
+              handleClick={() =>
+                window.open("https://faucet.avax.network/", "_blank")
+              }
             />
           </>
         );

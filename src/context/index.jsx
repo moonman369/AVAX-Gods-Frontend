@@ -64,17 +64,17 @@ export const GlobalContextProvider = ({ children }) => {
 
     resetParams();
 
-    window?.ethereum.on("chainChanged", () => {
+    window?.ethereum?.on("chainChanged", () => {
       resetParams();
     });
-    window?.ethereum.on("accountsChanged", () => {
+    window?.ethereum?.on("accountsChanged", () => {
       resetParams();
     });
   }, []);
 
   // * Set the wallet address to state
   const updateCurrentWalletAddress = async () => {
-    const accounts = await window.ethereum.request({
+    const accounts = await window?.ethereum?.request({
       method: "eth_requestAccounts",
     });
     console.log(accounts);
@@ -83,7 +83,7 @@ export const GlobalContextProvider = ({ children }) => {
 
   const switchToFuji = async () => {
     try {
-      await window.ethereum.request({
+      await window?.ethereum?.request({
         method: "wallet_switchEthereumChain",
         params: [
           {
@@ -94,7 +94,7 @@ export const GlobalContextProvider = ({ children }) => {
     } catch (switchError) {
       if (switchError.code === 4902) {
         try {
-          await window.ethereum.request({
+          await window?.ethereum?.request({
             method: "wallet_addEthereumChain",
             params: [
               {
@@ -119,7 +119,7 @@ export const GlobalContextProvider = ({ children }) => {
 
   useEffect(() => {
     updateCurrentWalletAddress();
-    window.ethereum.on("accountsChanged", updateCurrentWalletAddress);
+    window?.ethereum?.on("accountsChanged", updateCurrentWalletAddress);
   }, []);
 
   useEffect(() => {
