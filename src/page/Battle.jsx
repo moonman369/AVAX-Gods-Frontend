@@ -13,6 +13,7 @@ import { ActionButton, Alert, Card, GameInfo, PlayerInfo } from "../components";
 import { useGlobalContext } from "../context";
 import styles from "../styles";
 import { playAudio } from "../utils/animation.js";
+import { nullAddress } from "../context/createEventListeners";
 
 const Battle = () => {
   const {
@@ -32,10 +33,16 @@ const Battle = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (gameData.activeBattle?.winner !== nullAddress) {
+      navigate("/");
+    }
+  }, [gameData]);
+
+  useEffect(() => {
     const getPlayerInfo = async () => {
       try {
         let [player01Address, player02Address] = [null, null];
-        console.log(gameData.activeBattle);
+        console.log("activebattle", gameData.activeBattle);
 
         if (
           gameData.activeBattle.players[0].toLowerCase() ===

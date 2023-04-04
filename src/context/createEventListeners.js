@@ -4,7 +4,7 @@ import { playAudio, sparcle } from "../utils/animation.js";
 import { attackSound, defenseSound } from "../assets";
 import { useNavigate } from "react-router-dom";
 
-const nullAddress = "0x0000000000000000000000000000000000000000";
+export const nullAddress = "0x0000000000000000000000000000000000000000";
 
 const AddNewEvent = (eventFilter, provider, cb) => {
   provider.removeListener(eventFilter);
