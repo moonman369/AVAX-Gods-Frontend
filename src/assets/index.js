@@ -39,7 +39,7 @@ import xho from "./Xho.png";
 
 // logo
 import logo from "./logo.svg";
-import browserLogo from "./browserlogo.png";
+import browserLogo from "./browserlogo.jpg";
 
 // icon
 import attack from "./attack.png";

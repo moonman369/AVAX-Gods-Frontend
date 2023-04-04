@@ -31,6 +31,7 @@ const PageHOC = (Component, title, description) => () => {
           <nav>
             <ConnectWallet
               theme="dark"
+              btnTitle="Connect"
               className="font-epilogue font-semibold test-[16px] leading-[26px] text-white min-h-[52px] px-4 rounded-[10px]"
             />
           </nav>
