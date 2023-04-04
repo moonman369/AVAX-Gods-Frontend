@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import { CustomInput, PageHOC, CustomButton } from "../components";
 import { useGlobalContext } from "../context";
 import { GetParams, SwitchNetwork } from "../utils/onboard";
 import styles from "../styles";
+import { ConnectWallet } from "@thirdweb-dev/react";
 
 const Home = () => {
   const {

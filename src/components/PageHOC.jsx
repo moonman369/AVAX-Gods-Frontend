@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { ConnectWallet } from "@thirdweb-dev/react";
 
 import { logo, heroImg } from "../assets";
 import { useGlobalContext } from "../context";
@@ -18,14 +19,22 @@ const PageHOC = (Component, title, description) => () => {
       )}
 
       <div className={styles.hocContentBox}>
-        <img
-          src={logo}
-          alt="logo"
-          className={styles.hocLogo}
-          onClick={() => {
-            navigate("/");
-          }}
-        />
+        <div className={styles.flexBetween}>
+          <img
+            src={logo}
+            alt="logo"
+            className={styles.hocLogo}
+            onClick={() => {
+              navigate("/");
+            }}
+          />
+          <nav>
+            <ConnectWallet
+              theme="dark"
+              className="font-epilogue font-semibold test-[16px] leading-[26px] text-white min-h-[52px] px-4 rounded-[10px]"
+            />
+          </nav>
+        </div>
 
         <div className={styles.hocBodyWrapper}>
           <div className="flex flex-row w-full">
