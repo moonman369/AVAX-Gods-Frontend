@@ -2,12 +2,27 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CustomInput, PageHOC, CustomButton } from "../components";
 import { useGlobalContext } from "../context";
+import { GetParams, SwitchNetwork } from "../utils/onboard";
+import styles from "../styles";
 
 const Home = () => {
-  const { contract, walletAddress, setShowAlert, gameData, setErrorMessage } =
-    useGlobalContext();
+  const {
+    contract,
+    chain,
+    walletAddress,
+    setShowAlert,
+    gameData,
+    setErrorMessage,
+    provider,
+  } = useGlobalContext();
   const [playerName, setPlayerName] = useState("");
   const navigate = useNavigate();
+  const [step, setStep] = useState(-1);
+
+  const resetParamsHome = async () => {
+    const currStep = await GetParams();
+    setStep(currStep.step);
+  };
 
   const handleClick = async () => {
     try {
@@ -33,6 +48,12 @@ const Home = () => {
   };
 
   useEffect(() => {
+    console.log(window.ethereum);
+
+    resetParamsHome();
+  }, [walletAddress, contract, chain]);
+
+  useEffect(() => {
     const checkForPlayerToken = async () => {
       if (!contract) return;
       const playerExists = await contract.isPlayer(walletAddress);
@@ -50,6 +71,72 @@ const Home = () => {
       navigate(`/battle/${gameData.activeBattle.name}`);
     }
   }, [gameData]);
+
+  if (step === 0) {
+    return (
+      <>
+        <p className={styles.modalText}>
+          You don't have an Ethereum Wallet installed!
+        </p>
+        <div className={`${styles.flexCenter} gap-3`}>
+          <CustomButton
+            title="Download Core (Beta)"
+            handleClick={() => window.open("https://core.app/", "_blank")}
+            restStyles="cursor-pointer"
+          />
+          <br />
+          <CustomButton
+            title="Download Metamask"
+            handleClick={() =>
+              window.open("https://metamask.io/download/", "_blank")
+            }
+            restStyles="cursor-pointer"
+          />
+        </div>
+      </>
+    );
+  } else if (step === 1) {
+    return (
+      <>
+        <p className={styles.modalText}>
+          You haven't connected your account to your Ethereum Wallet!
+        </p>
+        <div className={`${styles.flexCenter} gap-3`}>
+          <CustomButton
+            title="Connect Account"
+            handleClick={updateCurrentWalletAddress}
+          />
+        </div>
+      </>
+    );
+  } else if (step === 2) {
+    return (
+      <>
+        <p className={styles.modalText}>
+          You're on a different network. Switch to Fuji C-Chain.
+        </p>
+        <div className={`${styles.flexCenter} gap-3`}>
+          <CustomButton title="Switch" handleClick={SwitchNetwork} />
+        </div>
+      </>
+    );
+  } else if (step === 3) {
+    return (
+      <>
+        <p className={styles.modalText}>
+          Oops, you don't have AVAX tokens in your account
+        </p>
+        <div className={`${styles.flexCenter} gap-3`}>
+          <CustomButton
+            title="Grab some test tokens"
+            handleClick={() =>
+              window.open("https://faucet.avax.network/", "_blank")
+            }
+          />
+        </div>
+      </>
+    );
+  }
 
   return (
     <div className="flex flex-col">

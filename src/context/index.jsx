@@ -21,6 +21,7 @@ const AVAX_FUJI_TESTNET_CHAIN_ID = 43113;
 
 export const GlobalContextProvider = ({ children }) => {
   const [walletAddress, setWalletAddress] = useState("");
+  const [chain, setChain] = useState("");
   const [provider, setProvider] = useState(null);
   const [contract, setContract] = useState(null);
   const [showAlert, setShowAlert] = useState({
@@ -66,6 +67,7 @@ export const GlobalContextProvider = ({ children }) => {
 
     window?.ethereum?.on("chainChanged", () => {
       resetParams();
+      setChain(window?.ethereum?.chainId);
     });
     window?.ethereum?.on("accountsChanged", () => {
       resetParams();
@@ -142,7 +144,7 @@ export const GlobalContextProvider = ({ children }) => {
       setContract(newContract);
     };
 
-    setSmartContractAndProvider();
+    if (window?.ethereum) setSmartContractAndProvider();
   }, []);
 
   useEffect(() => {
@@ -223,6 +225,8 @@ export const GlobalContextProvider = ({ children }) => {
         contract,
         walletAddress,
         updateCurrentWalletAddress,
+        chain,
+        setChain,
         showAlert,
         setShowAlert,
         battleName,

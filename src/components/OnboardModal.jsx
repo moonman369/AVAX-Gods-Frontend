@@ -5,11 +5,13 @@ import styles from "../styles";
 import { CustomButton } from ".";
 import { useGlobalContext } from "../context";
 import { GetParams, SwitchNetwork } from "../utils/onboard.js";
+import { useLocation } from "react-router-dom";
 
 const OnboardModal = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const { updateCurrentWalletAddress } = useGlobalContext();
   const [step, setStep] = useState(-1);
+  const { pathname } = useLocation();
 
   async function resetParams() {
     const currentStep = await GetParams();
@@ -32,6 +34,7 @@ const OnboardModal = () => {
   const generateStep = (st) => {
     switch (st) {
       case 0:
+        console.log(pathname);
         return (
           <>
             <p className={styles.modalText}>
@@ -57,7 +60,7 @@ const OnboardModal = () => {
         return (
           <>
             <p className={styles.modalText}>
-              You haven't connected your account to Core Wallet!
+              You haven't connected your account to your Ethereum Wallet!
             </p>
             <CustomButton
               title="Connect Account"
@@ -96,15 +99,17 @@ const OnboardModal = () => {
     }
   };
 
-  return (
-    <Modal
-      isOpen={modalIsOpen}
-      className={`absolute inset-0 ${styles.flexCenter} flex-col ${styles.glassEffect}`}
-      overlayClassName="Overlay"
-    >
-      {generateStep(step)}
-    </Modal>
-  );
+  if (pathname !== "/") {
+    return (
+      <Modal
+        isOpen={modalIsOpen}
+        className={`absolute inset-0 ${styles.flexCenter} flex-col ${styles.glassEffect}`}
+        overlayClassName="Overlay"
+      >
+        {generateStep(step)}
+      </Modal>
+    );
+  } else return <></>;
 };
 
 export default OnboardModal;
