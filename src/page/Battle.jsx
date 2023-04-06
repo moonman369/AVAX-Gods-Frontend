@@ -26,6 +26,7 @@ const Battle = () => {
     setErrorMessage,
     player1Ref,
     player2Ref,
+    setUpdateGameData,
   } = useGlobalContext();
   const [player1, setPlayer1] = useState({});
   const [player2, setPlayer2] = useState({});
@@ -34,6 +35,7 @@ const Battle = () => {
 
   useEffect(() => {
     if (gameData.activeBattle?.winner !== nullAddress) {
+      console.log(gameData);
       navigate(`/battle-summary/${battleName}`);
     }
   }, [gameData]);
@@ -100,9 +102,11 @@ const Battle = () => {
     playAudio(choice === 1 ? attackSound : defenseSound);
 
     try {
-      await contract.attackOrDefendChoice(choice, battleName, {
+      const tx = await contract.attackOrDefendChoice(choice, battleName, {
         gasLimit: 200000,
       });
+      await tx.wait();
+      setUpdateGameData((prevUpdateGameData) => prevUpdateGameData + 1);
 
       setShowAlert({
         status: true,
