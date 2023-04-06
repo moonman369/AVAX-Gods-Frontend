@@ -3,5 +3,6 @@ import CreateBattle from "./CreateBattle";
 import JoinBattle from "./JoinBattle";
 import Battle from "./Battle";
 import BattleGround from "./BattleGround";
+import BattleSummary from "./BattleSummary";
 
-export { Home, CreateBattle, JoinBattle, Battle, BattleGround };
+export { Home, CreateBattle, JoinBattle, Battle, BattleGround, BattleSummary };

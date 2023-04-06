@@ -5,7 +5,14 @@ import { ChainId, ThirdwebProvider } from "@thirdweb-dev/react";
 
 import { GlobalContextProvider } from "./context";
 import "./index.css";
-import { Home, CreateBattle, JoinBattle, Battle, BattleGround } from "./page";
+import {
+  Home,
+  CreateBattle,
+  JoinBattle,
+  Battle,
+  BattleGround,
+  BattleSummary,
+} from "./page";
 import { OnboardModal } from "./components";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
@@ -19,6 +26,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route path="/join-battle" element={<JoinBattle />} />
           <Route path="/battleground" element={<BattleGround />} />
           <Route path="/battle/:battleName" element={<Battle />} />
+          <Route
+            path="/battle-summary/:battleName"
+            element={<BattleSummary />}
+          />
         </Routes>
       </ThirdwebProvider>
     </GlobalContextProvider>

@@ -1,6 +1,9 @@
 const styles = {
   // general
   headText: "font-rajdhani font-bold text-white sm:text-6xl text-4xl",
+  summaryHead: "font-rajdhani font-bold text-white text-6xl text-center",
+  summaryKeyText: "font-rajdhani font-normal text-[20px] text-[#000000]",
+  summaryValueText: "font-rajdhani font-bold text-white text-[20px]",
   normalText: "font-rajdhani font-normal text-[24px] text-siteWhite",
   footerText: "font-rajdhani font-medium text-base text-white",
   infoText: "font-rajdhani font-medium text-lg text-siteViolet cursor-pointer",

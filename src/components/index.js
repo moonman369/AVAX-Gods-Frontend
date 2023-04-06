@@ -8,6 +8,7 @@ import Card from "./Card";
 import GameInfo from "./GameInfo";
 import PlayerInfo from "./PlayerInfo";
 import OnboardModal from "./OnboardModal";
+import SummaryCard from "./SummaryCard";
 
 export {
   PageHOC,
@@ -20,4 +21,5 @@ export {
   GameInfo,
   PlayerInfo,
   OnboardModal,
+  SummaryCard,
 };
