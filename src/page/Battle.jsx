@@ -42,6 +42,16 @@ const Battle = () => {
   }, [gameData]);
 
   useEffect(() => {
+    if (
+      !gameData?.activeBattle?.players
+        .map((player) => player.toLowerCase())
+        .includes(walletAddress)
+    ) {
+      navigate("/");
+    }
+  }, [walletAddress, gameData]);
+
+  useEffect(() => {
     const getPlayerInfo = async () => {
       try {
         let [player01Address, player02Address] = [null, null];
