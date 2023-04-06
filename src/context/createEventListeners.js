@@ -119,7 +119,7 @@ const createEventListeners = ({
       });
     }
 
-    navigate("/create-battle");
+    navigate(`/battle-summary/${args.battleName}`);
   });
 };
 
