@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useGlobalContext } from "../context";
 import styles from "../styles";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { SummaryCard } from "../components";
+import { nullAddress } from "../context/createEventListeners";
 
 const BattleSummary = () => {
   const [player, setPlayer] = useState("");
@@ -11,6 +12,8 @@ const BattleSummary = () => {
   const { battleGround, contract, walletAddress } = useGlobalContext();
 
   const { battleName } = useParams();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchInfo = async () => {
@@ -22,6 +25,12 @@ const BattleSummary = () => {
       setPlayer(walletAddress.toLowerCase());
     }
   }, [walletAddress, contract]);
+
+  useEffect(() => {
+    if (battle?.winner === nullAddress) {
+      navigate(`/battle/${battleName}`);
+    }
+  }, [battle]);
 
   return (
     <div

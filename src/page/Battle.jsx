@@ -35,6 +35,7 @@ const Battle = () => {
 
   useEffect(() => {
     if (gameData.activeBattle?.winner !== nullAddress) {
+      console.log(gameData.activeBattle?.winner !== nullAddress);
       console.log(gameData);
       navigate(`/battle-summary/${battleName}`);
     }
