@@ -24,12 +24,15 @@ const Battle = () => {
     setShowAlert,
     battleGround,
     setErrorMessage,
+    errorMessage,
     player1Ref,
     player2Ref,
     setUpdateGameData,
   } = useGlobalContext();
   const [player1, setPlayer1] = useState({});
   const [player2, setPlayer2] = useState({});
+  const [isDisabled, setIsDisabled] = useState(false);
+  const [prevMove, setPrevMove] = useState("");
   const { battleName } = useParams();
   const navigate = useNavigate();
 
@@ -49,7 +52,8 @@ const Battle = () => {
     ) {
       navigate("/");
     }
-  }, [walletAddress, gameData]);
+    console.log(gameData?.activeBattle?.players);
+  }, [walletAddress]);
 
   useEffect(() => {
     const getPlayerInfo = async () => {
@@ -102,7 +106,7 @@ const Battle = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       if (!gameData?.activeBattle) {
-        navigate("/");
+        navigate(`/battle-summary/${battleName}`);
       }
     }, 2000);
 
@@ -112,23 +116,48 @@ const Battle = () => {
   const makeAMove = async (choice) => {
     playAudio(choice === 1 ? attackSound : defenseSound);
 
-    try {
-      const tx = await contract.attackOrDefendChoice(choice, battleName, {
-        gasLimit: 200000,
-      });
-      await tx.wait();
-      setUpdateGameData((prevUpdateGameData) => prevUpdateGameData + 1);
+    if (walletAddress) {
+      try {
+        const tx = await contract.attackOrDefendChoice(choice, battleName, {
+          gasLimit: 200000,
+        });
 
-      setShowAlert({
-        status: true,
-        type: "info",
-        message: `Conjuring ${choice === 1 ? "attack" : "defense"} spell`,
-      });
-    } catch (error) {
-      console.log(error.reason);
-      setErrorMessage(error);
+        const res = await tx.wait();
+
+        setShowAlert({
+          status: true,
+          type: "info",
+          message: `Initiating ${choice === 1 ? "attack" : "defense"}`,
+        });
+      } catch (error) {
+        console.log(error?.reason);
+        setErrorMessage(error);
+      }
+      setPrevMove(walletAddress);
     }
   };
+
+  // const makeAMove = async (choice) => {
+  //   playAudio(choice === 1 ? attackSound : defenseSound);
+
+  //   try {
+  //     setIsDisabled(true);
+  //     const tx = await contract.attackOrDefendChoice(choice, battleName, {
+  //       gasLimit: 200000,
+  //     });
+  //     setShowAlert({
+  //       status: true,
+  //       type: "info",
+  //       message: `Conjuring ${choice === 1 ? "attack" : "defense"} spell`,
+  //     });
+  //     // await tx.wait();
+  //   } catch (error) {
+  //     console.log(error);
+  //     setErrorMessage(error);
+  //   }
+  //   setIsDisabled(false);
+  //   setUpdateGameData((prevUpdateGameData) => prevUpdateGameData + 1);
+  // };
 
   return (
     <div
@@ -155,6 +184,7 @@ const Battle = () => {
               makeAMove(1);
             }}
             restStyles="mr-2 hover:border-yellow-400"
+            isDisabled={isDisabled}
           />
 
           <Card
@@ -169,6 +199,7 @@ const Battle = () => {
               makeAMove(2);
             }}
             restStyles="ml-6 hover:border-red-600"
+            isDisabled={isDisabled}
           />
         </div>
       </div>

@@ -26,16 +26,16 @@ const JoinBattle = () => {
     setBattleName(battleName);
 
     try {
-      await contract.joinBattle(battleName, {
+      const tx = await contract.joinBattle(battleName, {
         gasLimit: 200000,
       });
+      await tx.wait();
+      navigate(`/battle/${battleName}`);
       setShowAlert({
         staus: true,
         type: "success",
         message: `Joining ${battleName}`,
       });
-
-      navigate(`/battle/${battleName}`);
     } catch (error) {
       setErrorMessage(error);
       // console.error(error);

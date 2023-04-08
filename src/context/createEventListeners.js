@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 export const nullAddress = "0x0000000000000000000000000000000000000000";
 
-const AddNewEvent = (eventFilter, provider, cb) => {
+export const AddNewEvent = (eventFilter, provider, cb) => {
   provider.removeListener(eventFilter);
 
   provider.on(eventFilter, (logs) => {

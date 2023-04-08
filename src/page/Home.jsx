@@ -69,10 +69,14 @@ const Home = () => {
   }, [contract, walletAddress]);
 
   useEffect(() => {
-    if (gameData.activeBattle) {
+    if (
+      gameData?.activeBattle?.players
+        .map((player) => player.toLowerCase())
+        .includes(walletAddress)
+    ) {
       navigate(`/battle/${gameData.activeBattle.name}`);
     }
-  }, [gameData]);
+  }, [walletAddress]);
 
   if (step === 0) {
     return (

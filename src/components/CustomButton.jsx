@@ -1,9 +1,10 @@
 import React from "react";
 import styles from "../styles";
 
-const CustomButton = ({ title, handleClick, restStyles }) => {
+const CustomButton = ({ title, handleClick, restStyles, isDisabled }) => {
   return (
     <button
+      disabled={isDisabled}
       type="button"
       className={`${styles.btn} ${restStyles}`}
       onClick={handleClick}

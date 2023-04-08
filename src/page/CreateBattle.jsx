@@ -7,7 +7,8 @@ import styles from "../styles";
 
 const CreateBattle = () => {
   const navigate = useNavigate();
-  const { contract, battleName, setBattleName, gameData, setErrorMessage } = useGlobalContext();
+  const { contract, battleName, setBattleName, gameData, setErrorMessage } =
+    useGlobalContext();
   const [waitBattle, setWaitBattle] = useState(false);
 
   useEffect(() => {
@@ -28,13 +29,13 @@ const CreateBattle = () => {
       });
       setWaitBattle(true);
     } catch (error) {
-      setErrorMessage(error)
+      setErrorMessage(error);
       // console.error(error);
     }
   };
 
   return (
-    <>
+    <div>
       {waitBattle && <GameLoad />}
       <div className="flex flex-col mb-5">
         <CustomInput
@@ -58,7 +59,7 @@ const CreateBattle = () => {
       >
         Or join an already existing battle!
       </p>
-    </>
+    </div>
   );
 };
 

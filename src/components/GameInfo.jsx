@@ -26,6 +26,7 @@ const GameInfo = () => {
         message: `You're quitting ${battleName}.`,
       });
     } catch (error) {
+      console.log(error.reason);
       setErrorMessage(error);
     }
   };
