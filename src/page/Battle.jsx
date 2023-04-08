@@ -38,8 +38,8 @@ const Battle = () => {
 
   useEffect(() => {
     if (gameData.activeBattle?.winner !== nullAddress) {
-      console.log(gameData.activeBattle?.winner !== nullAddress);
-      console.log(gameData);
+      // console.log(gameData.activeBattle?.winner !== nullAddress);
+      // console.log(gameData);
       navigate(`/battle-summary/${battleName}`);
     }
   }, [gameData]);
@@ -52,7 +52,7 @@ const Battle = () => {
     ) {
       navigate("/");
     }
-    console.log(gameData?.activeBattle?.players);
+    // console.log(gameData?.activeBattle?.players);
   }, [walletAddress]);
 
   useEffect(() => {
@@ -116,7 +116,19 @@ const Battle = () => {
   const makeAMove = async (choice) => {
     playAudio(choice === 1 ? attackSound : defenseSound);
 
-    if (walletAddress) {
+    // (walletAddress.toLowerCase() ===
+    //     gameData?.activeBattle?.players[0].toLowerCase() &&
+    //     !gameData?.activeBattle?.moves.includes(1)) ||
+
+    if (
+      gameData?.activeBattle?.previousMove.toLowerCase() !==
+      walletAddress.toLowerCase()
+    ) {
+      // console.log(
+      //   walletAddress,
+      //   gameData?.activeBattle?.players,
+      //   gameData?.activeBattle?.moves
+      // );
       try {
         const tx = await contract.attackOrDefendChoice(choice, battleName, {
           gasLimit: 200000,
@@ -134,6 +146,12 @@ const Battle = () => {
         setErrorMessage(error);
       }
       setPrevMove(walletAddress);
+    } else {
+      setShowAlert({
+        status: true,
+        type: "failure",
+        message: "You have already played your move",
+      });
     }
   };
 
