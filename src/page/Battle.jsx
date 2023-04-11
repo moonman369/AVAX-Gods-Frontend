@@ -19,6 +19,7 @@ const Battle = () => {
   const {
     contract,
     gameData,
+    setGameData,
     walletAddress,
     showAlert,
     setShowAlert,
@@ -116,43 +117,42 @@ const Battle = () => {
   const makeAMove = async (choice) => {
     playAudio(choice === 1 ? attackSound : defenseSound);
 
-    // (walletAddress.toLowerCase() ===
-    //     gameData?.activeBattle?.players[0].toLowerCase() &&
-    //     !gameData?.activeBattle?.moves.includes(1)) ||
+    if ((choice === 1 && player1?.playerMana?.toNumber() > 1) || choice == 2)
+      if (
+        gameData?.activeBattle?.previousMove.toLowerCase() !==
+        walletAddress.toLowerCase()
+      ) {
+        try {
+          const tx = await contract.attackOrDefendChoice(choice, battleName, {
+            gasLimit: 200000,
+          });
 
-    if (
-      gameData?.activeBattle?.previousMove.toLowerCase() !==
-      walletAddress.toLowerCase()
-    ) {
-      // console.log(
-      //   walletAddress,
-      //   gameData?.activeBattle?.players,
-      //   gameData?.activeBattle?.moves
-      // );
-      try {
-        const tx = await contract.attackOrDefendChoice(choice, battleName, {
-          gasLimit: 200000,
-        });
+          await tx.wait();
 
-        const res = await tx.wait();
+          setShowAlert({
+            status: true,
+            type: "info",
+            message: `Conjuring ${choice === 1 ? "attack" : "defense"} spell!`,
+          });
 
+          const res = await tx.wait();
+        } catch (error) {
+          console.log(error?.reason);
+          setErrorMessage(error);
+        }
+        setPrevMove(walletAddress);
+        // setUpdateGameData();
+      } else {
         setShowAlert({
           status: true,
-          type: "info",
-          message: `Initiating ${choice === 1 ? "attack" : "defense"}`,
+          type: "failure",
+          message: "You have already played your move",
         });
-      } catch (error) {
-        console.log(error?.reason);
-        setErrorMessage(error);
       }
-      setPrevMove(walletAddress);
-    } else {
-      setShowAlert({
-        status: true,
-        type: "failure",
-        message: "You have already played your move",
-      });
-    }
+
+    const { previousMove } = await contract.getBattle(battleName);
+
+    setPrevMove(previousMove);
   };
 
   // const makeAMove = async (choice) => {
@@ -198,8 +198,10 @@ const Battle = () => {
         <div className="flex items-center flex-row">
           <ActionButton
             imgUrl={attack}
-            handleClick={() => {
-              makeAMove(1);
+            handleClick={async () => {
+              setIsDisabled(true);
+              await makeAMove(1);
+              setIsDisabled(false);
             }}
             restStyles="mr-2 hover:border-yellow-400"
             isDisabled={isDisabled}
@@ -213,8 +215,10 @@ const Battle = () => {
           />
           <ActionButton
             imgUrl={defense}
-            handleClick={() => {
-              makeAMove(2);
+            handleClick={async () => {
+              setIsDisabled(true);
+              await makeAMove(2);
+              setIsDisabled(false);
             }}
             restStyles="ml-6 hover:border-red-600"
             isDisabled={isDisabled}

@@ -4,17 +4,13 @@ import styles from "../styles";
 
 const ActionButton = ({ imgUrl, handleClick, restStyles, isDisabled }) => {
   return (
-    <div
+    <button
       className={`${styles.gameMoveBox} ${styles.flexCenter} ${styles.glassEffect} ${restStyles}`}
+      disabled={isDisabled}
+      onClick={handleClick}
     >
-      <img
-        src={imgUrl}
-        alt="action"
-        className={styles.gameMoveIcon}
-        onClick={handleClick}
-        disabled={isDisabled}
-      />
-    </div>
+      <img src={imgUrl} alt="action" className={styles.gameMoveIcon} />
+    </button>
   );
 };
 

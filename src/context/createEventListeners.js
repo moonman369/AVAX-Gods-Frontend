@@ -33,6 +33,8 @@ const createEventListeners = ({
   setUpdateGameData,
   player1Ref,
   player2Ref,
+  gameData,
+  setGameData,
 }) => {
   const NewPlayerEventFilter = contract.filters.NewPlayer();
 
@@ -80,6 +82,7 @@ const createEventListeners = ({
   const BattleMoveEventFilter = contract.filters.BattleMove();
   AddNewEvent(BattleMoveEventFilter, provider, ({ args }) => {
     console.log("Battle move initiated", args);
+    setUpdateGameData((prevUpdateGameData) => prevUpdateGameData + 1);
   });
 
   const RoundEndedEventFilter = contract.filters.RoundEnded();
@@ -97,7 +100,7 @@ const createEventListeners = ({
       }
     }
 
-    setUpdateGameData((prevUpdateGameData) => prevUpdateGameData + 1);
+    // setUpdateGameData((prevUpdateGameData) => prevUpdateGameData + 1);
   });
 
   const BattleEndedEventFilter = contract.filters.BattleEnded();
