@@ -117,38 +117,45 @@ const Battle = () => {
   const makeAMove = async (choice) => {
     playAudio(choice === 1 ? attackSound : defenseSound);
 
-    if ((choice === 1 && player1?.playerMana?.toNumber() > 1) || choice == 2)
-      if (
-        gameData?.activeBattle?.previousMove.toLowerCase() !==
-        walletAddress.toLowerCase()
-      ) {
-        try {
-          const tx = await contract.attackOrDefendChoice(choice, battleName, {
-            gasLimit: 200000,
-          });
-
-          await tx.wait();
-
-          setShowAlert({
-            status: true,
-            type: "info",
-            message: `Conjuring ${choice === 1 ? "attack" : "defense"} spell!`,
-          });
-
-          const res = await tx.wait();
-        } catch (error) {
-          console.log(error?.reason);
-          setErrorMessage(error);
-        }
-        setPrevMove(walletAddress);
-        // setUpdateGameData();
-      } else {
+    if (
+      gameData?.activeBattle?.previousMove.toLowerCase() !==
+      walletAddress.toLowerCase()
+    ) {
+      if (choice === 1 && player1?.playerMana?.toNumber() < 3) {
         setShowAlert({
           status: true,
           type: "failure",
-          message: "You have already played your move",
+          message: "You don't have enough Mana for an attack spell.",
         });
+        return;
       }
+      try {
+        const tx = await contract.attackOrDefendChoice(choice, battleName, {
+          gasLimit: 200000,
+        });
+
+        await tx.wait();
+
+        setShowAlert({
+          status: true,
+          type: "info",
+          message: `Conjuring ${choice === 1 ? "attack" : "defense"} spell!`,
+        });
+
+        const res = await tx.wait();
+      } catch (error) {
+        console.log(error?.reason);
+        setErrorMessage(error);
+      }
+      setPrevMove(walletAddress);
+      // setUpdateGameData();
+    } else {
+      setShowAlert({
+        status: true,
+        type: "failure",
+        message: "You have already played your move",
+      });
+    }
 
     const { previousMove } = await contract.getBattle(battleName);
 
