@@ -125,7 +125,7 @@ const Battle = () => {
         setShowAlert({
           status: true,
           type: "failure",
-          message: "You don't have enough Mana for an attack spell.",
+          message: "You don't have enough Mana to conjure an attack spell.",
         });
         return;
       }
