@@ -41,6 +41,7 @@ export const GlobalContextProvider = ({ children }) => {
   );
   const [step, setStep] = useState(1);
   const [errorMessage, setErrorMessage] = useState("");
+  const [playerBattles, setPlayerBattles] = useState([]);
 
   const player1Ref = useRef();
   const player2Ref = useRef();
@@ -219,6 +220,24 @@ export const GlobalContextProvider = ({ children }) => {
     if (contract) fetchGameData();
   }, [contract, updateGameData]);
 
+  useEffect(() => {
+    const fetchBattles = async () => {
+      const allBattles = await contract.getAllBattles();
+      const fetchedPlayerBattles = allBattles.filter((battle) =>
+        battle.players
+          .map((player) => player.toLowerCase())
+          .includes(walletAddress.toLowerCase())
+      );
+      console.log(fetchedPlayerBattles);
+      setPlayerBattles(fetchedPlayerBattles);
+    };
+
+    if (contract && walletAddress) {
+      fetchBattles();
+      // console.log(playerBattles);
+    }
+  }, [contract, walletAddress]);
+
   return (
     <GlobalContext.Provider
       value={{
@@ -233,6 +252,8 @@ export const GlobalContextProvider = ({ children }) => {
         setBattleName,
         gameData,
         setGameData,
+        playerBattles,
+        setPlayerBattles,
         updateGameData,
         setUpdateGameData,
         battleGround,
