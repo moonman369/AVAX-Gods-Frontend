@@ -37,7 +37,7 @@ const PageHOC = (Component, title, description, walletAddress) => () => {
             <img
               src={player01}
               alt="profile"
-              className={`w-14 h-14 object-contain rounded-full cursor-pointer border-2`}
+              className={`w-[75px] h-[75px] object-contain rounded-full cursor-pointer border-[3px]`}
               onClick={() => {
                 navigate(`/profile/${address}`);
               }}
