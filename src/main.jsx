@@ -12,6 +12,7 @@ import {
   Battle,
   BattleGround,
   BattleSummary,
+  Profile,
 } from "./page";
 import { OnboardModal } from "./components";
 
@@ -30,6 +31,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             path="/battle-summary/:battleName"
             element={<BattleSummary />}
           />
+          <Route path="/profile/:walletAddress" element={<Profile />} />
         </Routes>
       </ThirdwebProvider>
     </GlobalContextProvider>
