@@ -4,6 +4,7 @@ import { useGlobalContext } from "../context";
 import { PageHOC } from "../components";
 import styles from "../styles";
 import { logo, player01 } from "../assets";
+import { nullAddress } from "../context/createEventListeners";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -16,11 +17,16 @@ const Profile = () => {
   const [inBattle, setInBattle] = useState("Fetching...");
 
   useEffect(() => {
-    if (walletAddress) setAddress(walletAddress);
+    const checkIsPlayer = async () => {
+      const isPlayer = await contract.isPlayer(walletAddress);
+      isPlayer ? setAddress(walletAddress) : navigate("/");
+    };
+    if (walletAddress) checkIsPlayer();
   }, [walletAddress]);
 
   useEffect(() => {
     if (playerBattles) setParticipatedBattles(playerBattles);
+    console.log(playerBattles);
   }, [playerBattles]);
 
   useEffect(() => {
@@ -74,26 +80,43 @@ const Profile = () => {
 
         <div className={styles.hocBodyWrapper}>
           <div className="flex flex-row w-full">
-            <h1 className={`flex ${styles.headText} head-text`}>
+            <h1 className={`flex ${styles.headText} head-text mb-8`}>
               {playerName}
             </h1>
           </div>
-          <p className={`${styles.normalText} my-10`}>
-            Player Address: {address}
-          </p>
-          <p className={`${styles.normalText} my-10`}>
-            Player Battle Status: {inBattle}
-          </p>
-        </div>
+          <pre className="flex flex-row">
+            <p className={`${styles.normalText}`}>Player Address:&nbsp;</p>
+            <a
+              className={styles.normalTextViolet}
+              href={`https://testnet.snowtrace.io/address/${address}`}
+              target="_blank"
+            >
+              {address}
+            </a>
+          </pre>
+          <span className="flex flex-row">
+            <p className={`${styles.normalText}`}>Player Address:&nbsp;</p>
+            <p className={styles.normalTextViolet}>{inBattle}</p>
+          </span>
 
-        <div>
-          {participatedBattles?.length > 0 ? (
-            participatedBattles.map((battle) => (
-              <div className="text-white">{battle.name}</div>
-            ))
-          ) : (
-            <div className="text-white">No battles found</div>
-          )}
+          <div>
+            <p className={`${styles.normalText} mt-10`}>
+              Participated battles:
+            </p>
+            {participatedBattles?.length > 0 ? (
+              participatedBattles.map((battle) => (
+                <li className={`${styles.normalTextViolet} text-[18px]`}>
+                  {battle.winner === nullAddress ? (
+                    <a href={`/battle/${battle.name}`}>{battle.name}</a>
+                  ) : (
+                    <a href={`/battle-summary/${battle.name}`}>{battle.name}</a>
+                  )}
+                </li>
+              ))
+            ) : (
+              <div className="text-white">No battles found</div>
+            )}
+          </div>
         </div>
 
         <p className={styles.footerText}>Made with 💜 by moonman369</p>
