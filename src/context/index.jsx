@@ -13,6 +13,7 @@ import { ABI, ADDRESS } from "../contract";
 import createEventListeners from "./createEventListeners";
 import { GetParams } from "../utils/onboard";
 import { parse } from "postcss";
+import { player01 } from "../assets";
 
 const GlobalContext = createContext();
 
@@ -42,6 +43,7 @@ export const GlobalContextProvider = ({ children }) => {
   const [step, setStep] = useState(1);
   const [errorMessage, setErrorMessage] = useState("");
   const [playerBattles, setPlayerBattles] = useState([]);
+  const [playerAvatarUri, setPlayerAvatarUri] = useState(player01);
 
   const player1Ref = useRef();
   const player2Ref = useRef();
@@ -175,6 +177,21 @@ export const GlobalContextProvider = ({ children }) => {
     }
   }, [showAlert]);
 
+  // Set player avatar url
+  useEffect(() => {
+    const fetchTokenId = async () => {
+      if (await contract.isPlayerToken(walletAddress)) {
+        const { id } = await contract.getPlayerToken(walletAddress);
+        setPlayerAvatarUri(
+          `https://gateway.pinata.cloud/ipfs/QmRRHrM8cxzMxyKYH6km5hQHeJgzznSsRebSd59NT6eik7/${id.toNumber()}.gif`
+        );
+      }
+    };
+    if (contract && walletAddress) {
+      fetchTokenId();
+    }
+  }, [contract, walletAddress]);
+
   // Handle error messages
   useEffect(() => {
     if (errorMessage) {
@@ -262,6 +279,8 @@ export const GlobalContextProvider = ({ children }) => {
         setErrorMessage,
         player1Ref,
         player2Ref,
+        playerAvatarUri,
+        setPlayerAvatarUri,
       }}
     >
       {children}

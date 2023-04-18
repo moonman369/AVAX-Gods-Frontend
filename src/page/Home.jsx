@@ -50,8 +50,6 @@ const Home = () => {
   };
 
   useEffect(() => {
-    console.log(window.ethereum);
-
     resetParamsHome();
   }, [walletAddress, contract, chain]);
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ConnectWallet } from "@thirdweb-dev/react";
 
-import { logo, heroImg, player01 } from "../assets";
+import { logo, heroImg } from "../assets";
 import { useGlobalContext } from "../context";
 import styles from "../styles";
 import Alert from "./Alert";
@@ -10,7 +10,8 @@ import Alert from "./Alert";
 // Implementing code reusability using Higher Order Component (HOC). It is essentially a wrapper component that takes another child component as an argument. It is a function that returns another function
 
 const PageHOC = (Component, title, description, walletAddress) => () => {
-  const { showAlert, walletAddress, contract } = useGlobalContext();
+  const { showAlert, walletAddress, contract, playerAvatarUri } =
+    useGlobalContext();
   const [address, setAddress] = useState("");
   const navigate = useNavigate();
 
@@ -40,7 +41,7 @@ const PageHOC = (Component, title, description, walletAddress) => () => {
           />
           {address && (
             <img
-              src={player01}
+              src={playerAvatarUri}
               alt="profile"
               title="Profile"
               className={`w-[58px] h-[58px] object-contain rounded-full cursor-pointer border-[2.5px]`}
