@@ -8,7 +8,7 @@ import { nullAddress } from "../context/createEventListeners";
 
 const Profile = () => {
   const navigate = useNavigate();
-  const { showAlert, walletAddress, playerBattles, contract } =
+  const { showAlert, walletAddress, playerBattles, contract, playerAvatarUri } =
     useGlobalContext();
   const [address, setAddress] = useState("");
 
@@ -60,7 +60,7 @@ const Profile = () => {
           />
           {address && (
             <img
-              src={player01}
+              src={playerAvatarUri}
               alt="profile"
               title="Profile"
               className={`w-[58px] h-[58px] object-contain rounded-full cursor-pointer border-[2.5px]`}
@@ -107,7 +107,10 @@ const Profile = () => {
             </p>
             {participatedBattles?.length > 0 ? (
               participatedBattles.map((battle) => (
-                <li className={`${styles.normalTextViolet} text-[18px]`}>
+                <li
+                  className={`${styles.normalTextViolet} text-[18px]`}
+                  key={battle.battleHash}
+                >
                   {battle.winner === nullAddress ? (
                     <a href={`/battle/${battle.name}`}>{battle.name}</a>
                   ) : (
