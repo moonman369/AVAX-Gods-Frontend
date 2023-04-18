@@ -52,6 +52,7 @@ const Profile = () => {
           <img
             src={logo}
             alt="logo"
+            title="Home"
             className={styles.hocLogo}
             onClick={() => {
               navigate("/");
@@ -61,6 +62,7 @@ const Profile = () => {
             <img
               src={player01}
               alt="profile"
+              title="Profile"
               className={`w-[58px] h-[58px] object-contain rounded-full cursor-pointer border-[2.5px]`}
               onClick={() => {
                 navigate(`/profile/${address}`);
@@ -87,11 +89,11 @@ const Profile = () => {
           <pre className="flex flex-row">
             <p className={`${styles.normalText}`}>Player Address:&nbsp;</p>
             <a
-              className={styles.normalTextViolet}
+              className={`${styles.normalTextViolet} font-extrabold`}
               href={`https://testnet.snowtrace.io/address/${address}`}
               target="_blank"
             >
-              {address}
+              {`${address.substring(0, 15)}....`}
             </a>
           </pre>
           <span className="flex flex-row">
