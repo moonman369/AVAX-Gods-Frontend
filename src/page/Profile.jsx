@@ -58,7 +58,7 @@ const Profile = () => {
               navigate("/");
             }}
           />
-          {address && (
+          {/* {address && (
             <img
               src={playerAvatarUri}
               alt="profile"
@@ -68,7 +68,7 @@ const Profile = () => {
                 navigate(`/profile/${address}`);
               }}
             />
-          )}
+          )} */}
           {!window.ethereum && (
             <nav>
               <ConnectWallet
@@ -125,6 +125,14 @@ const Profile = () => {
         </div>
 
         <p className={styles.footerText}>Made with 💜 by moonman369</p>
+      </div>
+
+      <div className="flex flex-1">
+        <img
+          src={playerAvatarUri}
+          alt="hero-img"
+          className="w-full xl:h-full object-cover bg-black"
+        />
       </div>
     </div>
   );
