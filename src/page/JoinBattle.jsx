@@ -22,6 +22,15 @@ const JoinBattle = () => {
     }
   }, [gameData]);
 
+  useEffect(() => {
+    const checkIsPlayer = async () => {
+      const isPlayer = await contract.isPlayer(walletAddress);
+      !isPlayer && navigate("/");
+    };
+
+    if (walletAddress) checkIsPlayer();
+  }, [walletAddress]);
+
   const handleClick = async (battleName) => {
     setBattleName(battleName);
 

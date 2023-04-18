@@ -10,12 +10,16 @@ import Alert from "./Alert";
 // Implementing code reusability using Higher Order Component (HOC). It is essentially a wrapper component that takes another child component as an argument. It is a function that returns another function
 
 const PageHOC = (Component, title, description, walletAddress) => () => {
-  const { showAlert, walletAddress } = useGlobalContext();
+  const { showAlert, walletAddress, contract } = useGlobalContext();
   const [address, setAddress] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (walletAddress) setAddress(walletAddress);
+    const checkIsPlayer = async () => {
+      const isPlayer = await contract.isPlayer(walletAddress);
+      isPlayer && setAddress(walletAddress);
+    };
+    if (walletAddress) checkIsPlayer();
   }, [walletAddress]);
   return (
     <div className={styles.hocContainer}>

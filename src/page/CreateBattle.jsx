@@ -7,8 +7,14 @@ import styles from "../styles";
 
 const CreateBattle = () => {
   const navigate = useNavigate();
-  const { contract, battleName, setBattleName, gameData, setErrorMessage } =
-    useGlobalContext();
+  const {
+    contract,
+    battleName,
+    setBattleName,
+    gameData,
+    setErrorMessage,
+    walletAddress,
+  } = useGlobalContext();
   const [waitBattle, setWaitBattle] = useState(false);
 
   useEffect(() => {
@@ -20,6 +26,15 @@ const CreateBattle = () => {
       setWaitBattle(true);
     }
   }, [gameData]);
+
+  useEffect(() => {
+    const checkIsPlayer = async () => {
+      const isPlayer = await contract.isPlayer(walletAddress);
+      !isPlayer && navigate("/");
+    };
+
+    if (walletAddress) checkIsPlayer();
+  }, [walletAddress]);
 
   const handleClick = async () => {
     if (!battleName || !battleName.trim()) return null;
