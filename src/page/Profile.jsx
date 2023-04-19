@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../context";
-import { PageHOC } from "../components";
+import { CustomButton, PageHOC } from "../components";
 import styles from "../styles";
 import { logo, player01 } from "../assets";
 import { nullAddress } from "../context/createEventListeners";
 
 const Profile = () => {
   const navigate = useNavigate();
-  const { showAlert, walletAddress, playerBattles, contract, playerAvatarUri } =
-    useGlobalContext();
+  const {
+    showAlert,
+    walletAddress,
+    playerBattles,
+    contract,
+    playerAvatarUri,
+    playerAvatarType,
+    playerAvatarMetadataUri,
+  } = useGlobalContext();
   const [address, setAddress] = useState("");
 
   const [participatedBattles, setParticipatedBattles] = useState();
@@ -21,12 +28,12 @@ const Profile = () => {
       const isPlayer = await contract.isPlayer(walletAddress);
       isPlayer ? setAddress(walletAddress) : navigate("/");
     };
-    if (walletAddress) checkIsPlayer();
-  }, [walletAddress]);
+    if (walletAddress && contract) checkIsPlayer();
+  }, [walletAddress, contract]);
 
   useEffect(() => {
-    if (playerBattles) setParticipatedBattles(playerBattles);
-    console.log(playerBattles);
+    if (playerBattles) setParticipatedBattles(playerBattles.reverse());
+    // console.log(playerBattles);
   }, [playerBattles]);
 
   useEffect(() => {
@@ -93,13 +100,19 @@ const Profile = () => {
               href={`https://testnet.snowtrace.io/address/${address}`}
               target="_blank"
             >
-              {`${address.substring(0, 15)}....`}
+              {`${address.substring(0, 17)}....`}
             </a>
           </pre>
-          <span className="flex flex-row">
-            <p className={`${styles.normalText}`}>Player Address:&nbsp;</p>
+          <pre className="flex flex-row">
+            <p className={`${styles.normalText}`}>
+              Player Battle Status:&nbsp;
+            </p>
             <p className={styles.normalTextViolet}>{inBattle}</p>
-          </span>
+          </pre>
+          <pre className="flex flex-row">
+            <p className={`${styles.normalText}`}>Player Avatar Type:&nbsp;</p>
+            <p className={styles.normalTextViolet}>{playerAvatarType}</p>
+          </pre>
 
           <div>
             <p className={`${styles.normalText} mt-10`}>
@@ -127,12 +140,17 @@ const Profile = () => {
         <p className={styles.footerText}>Made with 💜 by moonman369</p>
       </div>
 
-      <div className="flex flex-1">
-        <img
-          src={playerAvatarUri}
-          alt="hero-img"
-          className="w-full xl:h-full object-cover bg-black"
-        />
+      <div className="flex flex-1 bg-siteblack">
+        <a href={playerAvatarMetadataUri} target="_blank">
+          <img
+            src={playerAvatarUri}
+            alt="avatar"
+            title={playerAvatarType}
+            className="w-full xl:h-full object-cover bg-black rounded-[30px]"
+          />
+        </a>
+
+        {/* <CustomButton title="View Metadata" /> */}
       </div>
     </div>
   );

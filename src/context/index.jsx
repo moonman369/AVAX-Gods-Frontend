@@ -44,6 +44,8 @@ export const GlobalContextProvider = ({ children }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [playerBattles, setPlayerBattles] = useState([]);
   const [playerAvatarUri, setPlayerAvatarUri] = useState(player01);
+  const [playerAvatarType, setPlayerAvatarType] = useState("");
+  const [playerAvatarMetadataUri, setPlayerAvatarMetadataUri] = useState("");
 
   const player1Ref = useRef();
   const player2Ref = useRef();
@@ -177,14 +179,43 @@ export const GlobalContextProvider = ({ children }) => {
     }
   }, [showAlert]);
 
-  // Set player avatar url
+  // Set player avatar url and type
   useEffect(() => {
+    const setAvatarType = (id) => {
+      switch (id) {
+        case 0:
+          setPlayerAvatarType("DEVIL");
+          break;
+        case 1:
+          setPlayerAvatarType("GRIFFIN");
+          break;
+        case 2:
+          setPlayerAvatarType("FIREBIRD");
+          break;
+        case 3:
+          setPlayerAvatarType("KAMO");
+          break;
+        case 4:
+          setPlayerAvatarType("KUKULAN");
+          break;
+        case 5:
+          setPlayerAvatarType("CELESTION");
+          break;
+
+        default:
+          break;
+      }
+    };
     const fetchTokenId = async () => {
       if (await contract.isPlayerToken(walletAddress)) {
         const { id } = await contract.getPlayerToken(walletAddress);
         setPlayerAvatarUri(
           `https://gateway.pinata.cloud/ipfs/QmRRHrM8cxzMxyKYH6km5hQHeJgzznSsRebSd59NT6eik7/${id.toNumber()}.gif`
         );
+        setPlayerAvatarMetadataUri(
+          `https://gateway.pinata.cloud/ipfs/QmX2ubhtBPtYw75Wrpv6HLb1fhbJqxrnbhDo1RViW3oVoi/${id.toNumber()}.json`
+        );
+        setAvatarType(id.toNumber());
       }
     };
     if (contract && walletAddress) {
@@ -281,6 +312,10 @@ export const GlobalContextProvider = ({ children }) => {
         player2Ref,
         playerAvatarUri,
         setPlayerAvatarUri,
+        playerAvatarType,
+        setPlayerAvatarType,
+        playerAvatarMetadataUri,
+        setPlayerAvatarMetadataUri,
       }}
     >
       {children}
