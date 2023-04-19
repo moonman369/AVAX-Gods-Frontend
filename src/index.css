@@ -75,6 +75,11 @@ body {
   scrollbar-width: none;
 }
 
+button:hover {
+  background: #4601a1;
+  transition: all 300ms;
+}
+
 /* Battle Animation Effect */
 .container {
   position: absolute;

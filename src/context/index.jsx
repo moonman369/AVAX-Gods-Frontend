@@ -44,7 +44,7 @@ export const GlobalContextProvider = ({ children }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [playerBattles, setPlayerBattles] = useState([]);
   const [playerAvatarUri, setPlayerAvatarUri] = useState(player01);
-  const [playerAvatarType, setPlayerAvatarType] = useState("");
+  const [playerAvatarType, setPlayerAvatarType] = useState("Loading...");
   const [playerAvatarMetadataUri, setPlayerAvatarMetadataUri] = useState("");
 
   const player1Ref = useRef();

@@ -17,11 +17,11 @@ const Profile = () => {
     playerAvatarType,
     playerAvatarMetadataUri,
   } = useGlobalContext();
-  const [address, setAddress] = useState("");
+  const [address, setAddress] = useState("Loading");
 
   const [participatedBattles, setParticipatedBattles] = useState();
   const [playerName, setPlayerName] = useState("Player");
-  const [inBattle, setInBattle] = useState("Fetching...");
+  const [inBattle, setInBattle] = useState("Loading...");
 
   useEffect(() => {
     const checkIsPlayer = async () => {
@@ -96,7 +96,7 @@ const Profile = () => {
           <pre className="flex flex-row">
             <p className={`${styles.normalText}`}>Player Address:&nbsp;</p>
             <a
-              className={`${styles.normalTextViolet} font-extrabold`}
+              className={`${styles.boldTextViolet} font-extrabold`}
               href={`https://testnet.snowtrace.io/address/${address}`}
               target="_blank"
             >
@@ -113,6 +113,9 @@ const Profile = () => {
             <p className={`${styles.normalText}`}>Player Avatar Type:&nbsp;</p>
             <p className={styles.normalTextViolet}>{playerAvatarType}</p>
           </pre>
+          <a href={playerAvatarMetadataUri} target="_blank">
+            <CustomButton title="View Token Metadata" restStyles={`mt-3`} />
+          </a>
 
           <div>
             <p className={`${styles.normalText} mt-10`}>
@@ -141,16 +144,12 @@ const Profile = () => {
       </div>
 
       <div className="flex flex-1 bg-siteblack">
-        <a href={playerAvatarMetadataUri} target="_blank">
-          <img
-            src={playerAvatarUri}
-            alt="avatar"
-            title={playerAvatarType}
-            className="w-full xl:h-full object-cover bg-black rounded-[30px]"
-          />
-        </a>
-
-        {/* <CustomButton title="View Metadata" /> */}
+        <img
+          src={playerAvatarUri}
+          alt="avatar"
+          title={playerAvatarType}
+          className="w-full xl:h-full object-cover bg-black rounded-[30px]"
+        />
       </div>
     </div>
   );

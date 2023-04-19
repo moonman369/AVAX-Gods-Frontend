@@ -6,6 +6,7 @@ const styles = {
   summaryValueText: "font-rajdhani font-bold text-white text-[20px]",
   normalText: "font-rajdhani font-normal text-[24px] text-siteWhite",
   normalTextViolet: "font-rajdhani font-normal text-[24px] text-siteViolet",
+  boldTextViolet: "font-rajdhani font-bold text-[24px] text-siteViolet",
   footerText: "font-rajdhani font-medium text-base text-white",
   infoText: "font-rajdhani font-medium text-lg text-siteViolet cursor-pointer",
 
