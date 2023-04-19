@@ -18,14 +18,20 @@ const CreateBattle = () => {
   const [waitBattle, setWaitBattle] = useState(false);
 
   useEffect(() => {
-    if (gameData?.activeBattle?.battleStatus === 1) {
+    if (
+      walletAddress &&
+      gameData?.activeBattle?.battleStatus === 1 &&
+      gameData?.activeBattle?.players
+        ?.map((player) => player.toLowerCase())
+        .includes(walletAddress.toLowerCase())
+    ) {
       navigate(`/battle/${gameData.activeBattle.name}`);
     }
 
     if (gameData.activeBattle?.battleStatus === 0) {
       setWaitBattle(true);
     }
-  }, [gameData]);
+  }, [gameData, walletAddress]);
 
   useEffect(() => {
     const checkIsPlayer = async () => {

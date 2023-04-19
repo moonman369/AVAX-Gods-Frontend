@@ -17,10 +17,16 @@ const JoinBattle = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (gameData?.activeBattle?.battleStatus === 1) {
+    if (
+      walletAddress &&
+      gameData?.activeBattle?.battleStatus === 1 &&
+      gameData?.activeBattle?.players
+        ?.map((player) => player.toLowerCase())
+        .includes(walletAddress.toLowerCase())
+    ) {
       navigate(`/battle/${gameData.activeBattle.name}`);
     }
-  }, [gameData]);
+  }, [gameData, walletAddress]);
 
   useEffect(() => {
     const checkIsPlayer = async () => {
