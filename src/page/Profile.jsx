@@ -118,9 +118,7 @@ const Profile = () => {
           </a>
 
           <div>
-            <p className={`${styles.normalText} mt-10`}>
-              Participated battles:
-            </p>
+            <p className={`${styles.normalText} mt-10`}>Battles fought:</p>
             {participatedBattles?.length > 0 ? (
               participatedBattles.map((battle) => (
                 <li
@@ -135,7 +133,9 @@ const Profile = () => {
                 </li>
               ))
             ) : (
-              <div className="text-white">No battles found</div>
+              <div className={`${styles.normalTextWhite} text-[18px]`}>
+                You haven't fought any battles.
+              </div>
             )}
           </div>
         </div>
