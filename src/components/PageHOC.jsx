@@ -20,8 +20,8 @@ const PageHOC = (Component, title, description, walletAddress) => () => {
       const isPlayer = await contract.isPlayer(walletAddress);
       isPlayer && setAddress(walletAddress);
     };
-    if (walletAddress) checkIsPlayer();
-  }, [walletAddress]);
+    if (walletAddress && contract) checkIsPlayer();
+  }, [walletAddress, contract]);
   return (
     <div className={styles.hocContainer}>
       {showAlert?.status && (
@@ -44,7 +44,7 @@ const PageHOC = (Component, title, description, walletAddress) => () => {
               src={playerAvatarUri}
               alt="profile"
               title="Profile"
-              className={`w-[58px] h-[58px] object-contain rounded-full cursor-pointer border-[2.5px]`}
+              className={`w-[58px] h-[58px] object-contain rounded-full cursor-pointer border-[2px] border-siteViolet`}
               onClick={() => {
                 navigate(`/profile/${address}`);
               }}
