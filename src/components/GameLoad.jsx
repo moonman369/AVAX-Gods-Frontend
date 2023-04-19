@@ -7,7 +7,7 @@ import styles from "../styles";
 import CustomButton from "./CustomButton";
 
 const GameLoad = () => {
-  const { walletAddress } = useGlobalContext();
+  const { walletAddress, playerAvatarUri } = useGlobalContext();
   const navigate = useNavigate();
   return (
     <div className={`${styles.flexBetween} ${styles.gameLoadContainer}`}>
@@ -32,7 +32,11 @@ const GameLoad = () => {
 
         <div className={styles.gameLoadPlayersBox}>
           <div className={`${styles.flexCenter} flex-col`}>
-            <img src={player01} alt="" className={styles.gameLoadPlayerImg} />
+            <img
+              src={playerAvatarUri}
+              alt=""
+              className={styles.gameLoadPlayerImg}
+            />
             <p className={styles.gameLoadPlayerText}>{`${walletAddress.slice(
               0,
               25

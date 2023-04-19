@@ -35,6 +35,8 @@ const Battle = () => {
   const [isDisabled, setIsDisabled] = useState(false);
   const [prevMove, setPrevMove] = useState("");
   const { battleName } = useParams();
+  const [player1Avatar, setPlayer1Avatar] = useState(player01Icon);
+  const [player2Avatar, setPlayer2Avatar] = useState(player02Icon);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -44,6 +46,30 @@ const Battle = () => {
       navigate(`/battle-summary/${battleName}`);
     }
   }, [gameData]);
+
+  useEffect(() => {
+    const setAvatar = async () => {
+      const { id } = await contract.getPlayerToken(player1?.playerAddress);
+      setPlayer1Avatar(
+        `https://gateway.pinata.cloud/ipfs/QmRRHrM8cxzMxyKYH6km5hQHeJgzznSsRebSd59NT6eik7/${id.toNumber()}.gif`
+      );
+    };
+    if (player1 && contract) {
+      setAvatar();
+    }
+  }, [player1, contract]);
+
+  useEffect(() => {
+    const setAvatar = async () => {
+      const { id } = await contract.getPlayerToken(player2?.playerAddress);
+      setPlayer2Avatar(
+        `https://gateway.pinata.cloud/ipfs/QmRRHrM8cxzMxyKYH6km5hQHeJgzznSsRebSd59NT6eik7/${id.toNumber()}.gif`
+      );
+    };
+    if (player2 && contract) {
+      setAvatar();
+    }
+  }, [player2, contract]);
 
   useEffect(() => {
     if (
@@ -192,7 +218,7 @@ const Battle = () => {
         <Alert type={showAlert.type} message={showAlert.message} />
       )}
 
-      <PlayerInfo player={player2} playerIcon={player02Icon} mt />
+      <PlayerInfo player={player2} playerIcon={player2Avatar} mt />
 
       <div className={`${styles.flexCenter} flex-col my-10`}>
         <Card
@@ -233,7 +259,7 @@ const Battle = () => {
         </div>
       </div>
 
-      <PlayerInfo player={player1} playerIcon={player01Icon} />
+      <PlayerInfo player={player1} playerIcon={player1Avatar} />
 
       <GameInfo />
     </div>
