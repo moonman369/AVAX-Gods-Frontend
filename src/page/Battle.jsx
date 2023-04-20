@@ -141,6 +141,7 @@ const Battle = () => {
   }, []);
 
   const makeAMove = async (choice) => {
+    setUpdateGameData((prev) => prev + 1);
     playAudio(choice === 1 ? attackSound : defenseSound);
 
     if (
