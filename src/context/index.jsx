@@ -144,6 +144,7 @@ export const GlobalContextProvider = ({ children }) => {
       const newProvider = new ethers.providers.Web3Provider(connection);
       const signer = newProvider.getSigner();
       const newContract = new ethers.Contract(ADDRESS, ABI, signer);
+      console.log(newContract);
 
       setProvider(newProvider);
       setContract(newContract);

@@ -49,6 +49,24 @@ const Home = () => {
     }
   };
 
+  const handleCreateClick = async () => {
+    try {
+      const playerExists = await contract.isPlayer(walletAddress);
+      const playerTokenExists = await contract.isPlayerToken(walletAddress);
+      if (playerExists && playerTokenExists) {
+        navigate("/create-battle");
+      } else {
+        setShowAlert({
+          status: true,
+          type: "failure",
+          message: `Please register your account first!`,
+        });
+      }
+    } catch (error) {
+      setErrorMessage(error);
+    }
+  };
+
   useEffect(() => {
     resetParamsHome();
   }, [walletAddress, contract, chain]);
@@ -156,6 +174,17 @@ const Home = () => {
         handleClick={handleClick}
         restStyles="mt-6"
       />
+
+      <div>
+        <p className={`${styles.normalText} mt-14 text-[18px]`}>
+          Already Registered?
+        </p>
+        <CustomButton
+          title="Create Battle"
+          handleClick={handleCreateClick}
+          restStyles="mt-3"
+        />
+      </div>
     </div>
   );
 };
