@@ -100,7 +100,7 @@ const createEventListeners = ({
       }
     }
 
-    // setUpdateGameData((prevUpdateGameData) => prevUpdateGameData + 1);
+    // setUpdateGameData((prevUpdateGameData) => prevUpdateGameData + 1); test
   });
 
   const BattleEndedEventFilter = contract.filters.BattleEnded();
